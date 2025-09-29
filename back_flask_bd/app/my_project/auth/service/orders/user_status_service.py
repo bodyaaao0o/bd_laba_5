@@ -10,8 +10,8 @@ class UserStatusService(GeneralService):
         super().__init__(UserStatusDAO())
 
     def get_users_by_status(self, user_status_id: int) -> Dict[str, Any]:
-        user_status_dao = UserStatusDAO()  # Create an instance
-        user_status = user_status_dao.find_by_id(user_status_id)  # Call the method on the instance
+        user_status_dao = UserStatusDAO()
+        user_status = user_status_dao.find_by_id(user_status_id)
         if not user_status:
             raise ValueError("User status not found.")
 

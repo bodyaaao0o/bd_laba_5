@@ -5,7 +5,7 @@ from back_flask_bd.app.my_project.auth.service.orders.user_service import UserSe
 class UserController(GeneralController):
 
     def __init__(self):
-        super().__init__(UserService())  # Ініціалізація конкретного сервісу для користувачів
+        super().__init__(UserService())
 
     def find_by_username(self, username):
         return self._service.find_by_username(username)

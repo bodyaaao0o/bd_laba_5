@@ -5,3 +5,11 @@ mysqlclient==2.2.0
 sqlalchemy-utils==0.41.1
 jinja2==3.1.2
 sqlalchemy
+flasgger
+
+# AWS Secrets Manager
+boto3>=1.28.0
+botocore>=1.31.0
+
+# PyMySQL для з'єднання з MySQL
+PyMySQL>=1.1.0

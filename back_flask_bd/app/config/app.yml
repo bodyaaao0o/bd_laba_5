@@ -9,7 +9,9 @@ development:
 
 production:
   <<: *common
-  SQLALCHEMY_DATABASE_URI: 'mysql+pymysql://root:bohdan200.6@localhost:3306/newww'
+  # В production конфігурація завантажується з AWS Secrets Manager
+  # Цей рядок використовується тільки як fallback якщо AWS недоступний
+  SQLALCHEMY_DATABASE_URI: 'mysql+pymysql://placeholder:placeholder@localhost:3306/placeholder'
 
 ADDITIONAL_CONFIG:
   MYSQL_ROOT_USER: root

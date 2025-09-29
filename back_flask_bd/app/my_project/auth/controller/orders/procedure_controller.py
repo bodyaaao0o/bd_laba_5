@@ -60,14 +60,13 @@ def call_column_stat(table_name, column_name, operation):
 def execute_create_random_tables_and_copy_data():
     connection = None
     try:
-        # Отримуємо сирий зв'язок із базою
         connection = db.engine.raw_connection()
         cursor = connection.cursor()
 
         cursor.callproc('CreateRandomTablesAndCopyData')
 
         cursor.close()
-        connection.commit()  # Фіксуємо зміни
+        connection.commit()
         return {"success": True, "message": "Procedure executed successfully."}
     except Exception as e:
         logging.error(f"Error executing procedure CreateRandomTablesAndCopyData: {str(e)}")

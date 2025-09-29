@@ -15,12 +15,67 @@ user_bp = Blueprint('user', __name__, url_prefix='/user')
 
 @user_bp.route('/', methods=['GET'])
 def get_all_users() -> Response:
+    """
+    Отримати всіх користувачів
+    ---
+    tags:
+      - Users
+    responses:
+      200:
+        description: Список користувачів
+        schema:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                example: 1
+              name:
+                type: string
+                example: "Іван Іванов"
+              email:
+                type: string
+                example: "ivan@example.com"
+              user_status_id:
+                type: integer
+                example: 1
+    """
     user_controller_instance = UserController()
     return make_response(jsonify(user_controller_instance.find_all()), HTTPStatus.OK)
 
-
-@user_bp.post('/')
+@user_bp.route('/', methods=['POST'])
 def create_user() -> Response:
+    """
+    Створити користувача
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: body
+        name: user
+        required: true
+        schema:
+          type: object
+          required:
+            - name
+            - email
+          properties:
+            name:
+              type: string
+              example: "Петро Петренко"
+            email:
+              type: string
+              example: "petro@example.com"
+            user_status_id:
+              type: integer
+              example: 1
+    responses:
+      201:
+        description: Користувач створений
+      400:
+        description: Некоректні дані
+    """
     content = request.get_json()
 
     # Отримання статусу з бази даних, щоб встановити user_status_id
@@ -40,9 +95,25 @@ def create_user() -> Response:
 
     return make_response(jsonify(user.put_into_dto()), HTTPStatus.CREATED)
 
-
-@user_bp.get('/<int:user_id>')
+@user_bp.route('/<int:user_id>', methods=['GET'])
 def get_user(user_id: int) -> Response:
+    """
+    Отримати користувача за ID
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+        example: 1
+    responses:
+      200:
+        description: Дані користувача
+      404:
+        description: Користувача не знайдено
+    """
     user_controller_instance = UserController()
     user = user_controller_instance.find_by_id(user_id)
     if not user:
@@ -50,9 +121,42 @@ def get_user(user_id: int) -> Response:
 
     return make_response(jsonify(user_controller_instance.find_by_id(user_id)), HTTPStatus.OK)
 
-
-@user_bp.put('/<int:user_id>')
+@user_bp.route('/<int:user_id>', methods=['PUT'])
 def update_user(user_id: int) -> Response:
+    """
+    Повністю оновити користувача
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+        example: 1
+      - in: body
+        name: user
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Нове ім'я"
+            email:
+              type: string
+              example: "new@example.com"
+            user_status_id:
+              type: integer
+              example: 2
+    responses:
+      200:
+        description: Користувач оновлений
+      400:
+        description: Некоректні дані
+      404:
+        description: Користувача не знайдено
+    """
     content = request.get_json()
     if content is None:
         abort(HTTPStatus.BAD_REQUEST, "No data provided")
@@ -64,14 +168,60 @@ def update_user(user_id: int) -> Response:
 
     return make_response("User updated", HTTPStatus.OK)
 
-@user_bp.patch('/<int:user_id>')
+@user_bp.route('/<int:user_id>', methods=['PATCH'])
 def patch_user(user_id: int) -> Response:
+    """
+    Частково оновити користувача
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+        example: 1
+      - in: body
+        name: user_patch
+        required: true
+        schema:
+          type: object
+          properties:
+            name:
+              type: string
+              example: "Нове ім'я"
+            email:
+              type: string
+              example: "new@example.com"
+    responses:
+      200:
+        description: Користувач оновлений
+      404:
+        description: Користувача не знайдено
+    """
     content = request.get_json()
     UserController.patch(user_id, content)
     return make_response("User updated", HTTPStatus.OK)
 
-@user_bp.delete('/<int:user_id>')
+@user_bp.route('/<int:user_id>', methods=['DELETE'])
 def delete_user(user_id: int) -> Response:
+    """
+    Видалити користувача
+    ---
+    tags:
+      - Users
+    parameters:
+      - in: path
+        name: user_id
+        type: integer
+        required: true
+        example: 1
+    responses:
+      200:
+        description: Користувач видалений
+      404:
+        description: Користувача не знайдено
+    """
     user_controller_instance = UserController()
     user_controller_instance.delete(user_id)
     return make_response("User deleted", HTTPStatus.OK)

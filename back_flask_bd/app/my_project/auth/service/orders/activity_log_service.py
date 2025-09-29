@@ -10,8 +10,8 @@ class ActivityLogService(GeneralService):
         super().__init__(ActivityLogDao())
 
     def get_users_by_activity_log(self, user_activity_log_id: int) -> Dict[str, Any]:
-        activity_log_dao = ActivityLogDao()  # Create an instance
-        user_action = activity_log_dao.find_by_id(user_activity_log_id)  # Call the method on the instance
+        activity_log_dao = ActivityLogDao()
+        user_action = activity_log_dao.find_by_id(user_activity_log_id)
         if not user_action:
             raise ValueError("User status not found.")
 
