@@ -1,6 +1,13 @@
 import os
+import sys
 from waitress import serve
 import yaml
+
+# Додаємо батьківську папку в PYTHONPATH
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, parent_dir)
+
 from back_flask_bd.app.my_project import create_app
 
 DEVELOPMENT_PORT = 5000
@@ -11,12 +18,15 @@ PRODUCTION = "production"
 FLASK_ENV = "FLASK_ENV"
 ADDITIONAL_CONFIG = "ADDITIONAL_CONFIG"
 
+
 def load_config():
-    config_yaml_path = os.path.join(os.getcwd(), 'config', 'app.yml')
+    # Шлях відносно цього файлу
+    config_yaml_path = os.path.join(os.path.dirname(__file__), 'config', 'app.yml')
 
     with open(config_yaml_path, 'r', encoding='utf-8') as yaml_file:
         config_data_dict = yaml.load(yaml_file, Loader=yaml.FullLoader)
         return config_data_dict
+
 
 if __name__ == '__main__':
     flask_env = os.environ.get(FLASK_ENV, DEVELOPMENT).lower()
@@ -28,7 +38,7 @@ if __name__ == '__main__':
         if not config_data:
             raise ValueError("Development configuration not found in YAML file.")
         app = create_app(config_data, additional_config)
-        app.run(port=DEVELOPMENT_PORT, debug=True)
+        app.run(host=HOST, port=DEVELOPMENT_PORT, debug=True)
 
     elif flask_env == PRODUCTION:
         config_data = config_data_dict.get(PRODUCTION)
