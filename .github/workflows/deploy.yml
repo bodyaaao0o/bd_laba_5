@@ -24,6 +24,3 @@ jobs:
             cd /home/ubuntu/flaskapp/bd_laba_5
             git fetch --all
             git reset --hard origin/main
-            cd /home/ubuntu
-            chmod +x ./start_app.sh
-            ./start_app.sh
