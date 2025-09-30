@@ -29,15 +29,9 @@ def get_all_activity_logs() -> Response:
               id:
                 type: integer
                 example: 1
-              user_id:
-                type: integer
-                example: 1
               action:
                 type: string
-                example: "LOGIN"
-              description:
-                type: string
-                example: "Користувач увійшов в систему"
+                example: "user logged in"
               timestamp:
                 type: string
                 format: date-time
@@ -67,22 +61,11 @@ def create_activity_log() -> Response:
         schema:
           type: object
           required:
-            - user_id
             - action
           properties:
-            user_id:
-              type: integer
-              example: 1
             action:
               type: string
-              example: "LOGIN"
-              enum: ["LOGIN", "LOGOUT", "CREATE", "UPDATE", "DELETE", "VIEW"]
-            description:
-              type: string
-              example: "Користувач увійшов в систему"
-            ip_address:
-              type: string
-              example: "192.168.1.100"
+              example: "User do some action"
     responses:
       201:
         description: Запис активності створений
@@ -149,15 +132,9 @@ def update_activity_log(user_activity_log_id: int) -> Response:
         schema:
           type: object
           properties:
-            user_id:
-              type: integer
-              example: 2
             action:
               type: string
-              example: "DELETE"
-            description:
-              type: string
-              example: "Оновлений опис"
+              example: "User do some another action"
     responses:
       200:
         description: Запис оновлений
@@ -198,12 +175,9 @@ def patch_activity_log(user_activity_log_id: int) -> Response:
         schema:
           type: object
           properties:
-            description:
-              type: string
-              example: "Оновлений опис"
             action:
               type: string
-              example: "VERIFIED"
+              example: "New action"
     responses:
       200:
         description: Запис оновлений
@@ -272,15 +246,22 @@ def get_users_by_activity_log(user_activity_log_id: int) -> Response:
           items:
             type: object
             properties:
+              properties:
               id:
                 type: integer
                 example: 1
-              name:
+              user_name:
                 type: string
-                example: "Іван Іванов"
+                example: "II-100-10"
               email:
                 type: string
-                example: "ivan@example.com"
+                example: "email@gmail.com"
+              password:
+                type: string
+                example: "password"
+              user_status_id:
+                type: integer
+                example: 1
       404:
         description: Запис не знайдено
     """

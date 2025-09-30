@@ -51,12 +51,9 @@ def create_chat() -> Response:
           required:
             - name
           properties:
-            name:
+            chat_name:
               type: string
-              example: "Новий чат"
-            description:
-              type: string
-              example: "Опис чату"
+              example: "new Name"
     responses:
       201:
         description: Чат успішно створений
@@ -113,12 +110,9 @@ def update_chat(chat_id: int) -> Response:
         schema:
           type: object
           properties:
-            name:
+            chat_name:
               type: string
-              example: "Оновлена назва"
-            description:
-              type: string
-              example: "Оновлений опис"
+              example: "Updated name"
     responses:
       200:
         description: Чат оновлено
@@ -160,10 +154,7 @@ def patch_chat(chat_id: int) -> Response:
           properties:
             name:
               type: string
-              example: "Нова назва"
-            description:
-              type: string
-              example: "Новий опис"
+              example: "New updated name"
     responses:
       200:
         description: Чат оновлено

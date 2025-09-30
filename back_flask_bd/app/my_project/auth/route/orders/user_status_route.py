@@ -28,12 +28,9 @@ def get_all_user_status() -> Response:
               id:
                 type: integer
                 example: 1
-              status_name:
+              status:
                 type: string
                 example: "Active"
-              description:
-                type: string
-                example: "Активний користувач"
       500:
         description: Помилка сервера
     """
@@ -62,12 +59,9 @@ def create_user_status() -> Response:
           required:
             - status_name
           properties:
-            status_name:
+            status:
               type: string
               example: "Premium"
-            description:
-              type: string
-              example: "Преміум користувач"
     responses:
       201:
         description: Статус створений
@@ -89,7 +83,7 @@ def get_user_status(user_status_id: int) -> Response:
       - User Status
     parameters:
       - in: path
-        name: user_status_id
+        name: status_id
         type: integer
         required: true
         example: 1
@@ -111,7 +105,7 @@ def update_user_status(user_status_id: int) -> Response:
       - User Status
     parameters:
       - in: path
-        name: user_status_id
+        name: status_id
         type: integer
         required: true
         example: 1
@@ -124,9 +118,6 @@ def update_user_status(user_status_id: int) -> Response:
             status_name:
               type: string
               example: "Updated Status"
-            description:
-              type: string
-              example: "Оновлений опис"
     responses:
       200:
         description: Статус оновлений
@@ -152,7 +143,7 @@ def patch_user_status(user_status_id: int) -> Response:
       - User Status
     parameters:
       - in: path
-        name: user_status_id
+        name: status_id
         type: integer
         required: true
         example: 1
@@ -162,12 +153,9 @@ def patch_user_status(user_status_id: int) -> Response:
         schema:
           type: object
           properties:
-            status_name:
+            status:
               type: string
               example: "New Name"
-            description:
-              type: string
-              example: "Новий опис"
     responses:
       200:
         description: Статус оновлений
@@ -188,7 +176,7 @@ def delete_user_status(user_status_id: int) -> Response:
       - User Status
     parameters:
       - in: path
-        name: user_status_id
+        name: status_id
         type: integer
         required: true
         example: 1
@@ -226,12 +214,21 @@ def get_users_by_status(user_status_id: int) -> Response:
               id:
                 type: integer
                 example: 1
-              name:
+              user_name:
                 type: string
-                example: "Іван Іванов"
+                example: "II-100-10"
               email:
                 type: string
-                example: "ivan@example.com"
+                example: "email@gmail.com"
+              password:
+                type: string
+                example: "password"
+              user_status_id:
+                type: integer
+                example: 1
+              status:
+                 type: string
+                 example: "Online"
       404:
         description: Статус не знайдено або користувачі відсутні
     """

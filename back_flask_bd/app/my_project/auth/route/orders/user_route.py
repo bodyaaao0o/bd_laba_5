@@ -4,7 +4,6 @@ from os import abort
 from flask import Blueprint, jsonify, Response, request, make_response
 
 from back_flask_bd.app.my_project import db
-from back_flask_bd.app.my_project.auth.controller import user_controller
 from back_flask_bd.app.my_project.auth.controller.orders.user_controller import UserController
 from back_flask_bd.app.my_project.auth.domain import User
 from back_flask_bd.app.my_project.auth.domain.orders.user_status import UserStatus
@@ -31,12 +30,15 @@ def get_all_users() -> Response:
               id:
                 type: integer
                 example: 1
-              name:
+              user_name:
                 type: string
-                example: "Іван Іванов"
+                example: "II-100-10"
               email:
                 type: string
-                example: "ivan@example.com"
+                example: "email@gmail.com"
+              password:
+                type: string
+                example: "password"
               user_status_id:
                 type: integer
                 example: 1
@@ -60,14 +62,21 @@ def create_user() -> Response:
           required:
             - name
             - email
+            - password
           properties:
-            name:
+            user_name:
               type: string
-              example: "Петро Петренко"
+              example: "UU-102-10"
             email:
               type: string
-              example: "petro@example.com"
+              example: "someEmail@gmail.com"
+            password:
+              type: string
+              example: "password"
             user_status_id:
+              type: integer
+              example: 1
+            user_activity_log_id:
               type: integer
               example: 1
     responses:
@@ -78,14 +87,12 @@ def create_user() -> Response:
     """
     content = request.get_json()
 
-    # Отримання статусу з бази даних, щоб встановити user_status_id
     status_id = content.get("user_status_id")
     if status_id:
         user_status = UserStatus.query.get(status_id)
         if not user_status:
             abort(HTTPStatus.BAD_REQUEST, "Invalid user_status_id provided.")
 
-    # Створення нового користувача
     user = User.create_from_dto(content)
     if not user:
         abort(HTTPStatus.BAD_REQUEST, "Invalid data provided for user.")
@@ -140,13 +147,19 @@ def update_user(user_id: int) -> Response:
         schema:
           type: object
           properties:
-            name:
+            user_name:
               type: string
-              example: "Нове ім'я"
+              example: "FF-103-11"
             email:
               type: string
-              example: "new@example.com"
+              example: "someNewEmail@gmail.com"
+            password:
+              type: string
+              example: "newPassword"
             user_status_id:
+              type: integer
+              example: 2
+            user_activity_log_id:
               type: integer
               example: 2
     responses:
@@ -187,12 +200,12 @@ def patch_user(user_id: int) -> Response:
         schema:
           type: object
           properties:
-            name:
+            user_name:
               type: string
-              example: "Нове ім'я"
+              example: "FF-103-11"
             email:
               type: string
-              example: "new@example.com"
+              example: "someNewEmail@gmail.com"
     responses:
       200:
         description: Користувач оновлений

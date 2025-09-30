@@ -3,10 +3,8 @@ import sys
 from waitress import serve
 import yaml
 
-# Додаємо батьківську папку проекту в PYTHONPATH
-# Це дозволить імпортувати back_flask_bd як пакет
-current_dir = os.path.dirname(os.path.abspath(__file__))  # .../back_flask_bd/app
-project_root = os.path.dirname(os.path.dirname(current_dir))  # .../bd_laba_5
+current_dir = os.path.dirname(os.path.abspath(__file__))
+project_root = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, project_root)
 
 print(f"Added to PYTHONPATH: {project_root}")
@@ -23,7 +21,6 @@ ADDITIONAL_CONFIG = "ADDITIONAL_CONFIG"
 
 
 def load_config():
-    # Шлях відносно цього файлу
     config_yaml_path = os.path.join(os.path.dirname(__file__), 'config', 'app.yml')
 
     print(f"Loading config from: {config_yaml_path}")
