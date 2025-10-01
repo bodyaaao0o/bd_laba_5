@@ -42,6 +42,12 @@ def get_all_users() -> Response:
               user_status_id:
                 type: integer
                 example: 1
+              status:
+                 type: string
+                 example: "Online"
+              user_action:
+                 type: string
+                 example: "User loggen in"
     """
     user_controller_instance = UserController()
     return make_response(jsonify(user_controller_instance.find_all()), HTTPStatus.OK)
