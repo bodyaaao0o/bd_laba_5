@@ -10,38 +10,38 @@ from back_flask_bd.app.my_project.auth.domain import UserStatus
 
 user_status_bp = Blueprint('user_status', __name__, url_prefix='/user_status')
 
-@user_status_bp.route('/', methods=['GET'])
-def get_all_user_status() -> Response:
-    """
-    Отримати всі статуси користувачів
-    ---
-    tags:
-      - User Status
-    responses:
-      200:
-        description: Список всіх статусів
-        schema:
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-                example: 1
-              status:
-                type: string
-                example: "Active"
-      500:
-        description: Помилка сервера
-    """
-    try:
-        user_status_controller_instance = UserStatusController()
-        statuses = user_status_controller_instance.find_all()
-        print("Знайдені статуси:", statuses)
-        return make_response(jsonify(statuses), HTTPStatus.OK)
-    except Exception as e:
-        print("Помилка при отриманні статусів:", str(e))
-        return make_response(jsonify({"error": "Не вдалося отримати статуси"}), HTTPStatus.INTERNAL_SERVER_ERROR)
+# @user_status_bp.route('/', methods=['GET'])
+# def get_all_user_status() -> Response:
+#     """
+#     Отримати всі статуси користувачів
+#     ---
+#     tags:
+#       - User Status
+#     responses:
+#       200:
+#         description: Список всіх статусів
+#         schema:
+#           type: array
+#           items:
+#             type: object
+#             properties:
+#               id:
+#                 type: integer
+#                 example: 1
+#               status:
+#                 type: string
+#                 example: "Active"
+#       500:
+#         description: Помилка сервера
+#     """
+#     try:
+#         user_status_controller_instance = UserStatusController()
+#         statuses = user_status_controller_instance.find_all()
+#         print("Знайдені статуси:", statuses)
+#         return make_response(jsonify(statuses), HTTPStatus.OK)
+#     except Exception as e:
+#         print("Помилка при отриманні статусів:", str(e))
+#         return make_response(jsonify({"error": "Не вдалося отримати статуси"}), HTTPStatus.INTERNAL_SERVER_ERROR)
 
 @user_status_bp.route('/', methods=['POST'])
 def create_user_status() -> Response:
