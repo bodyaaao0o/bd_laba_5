@@ -11,7 +11,6 @@ from back_flask_bd.app.my_project.database import db
 from back_flask_bd.app.my_project.auth.route.orders.user_route import user_bp
 from back_flask_bd.app.my_project.auth.route.orders.user_status_route import user_status_bp
 
-# Імпортуємо функції для роботи з AWS Secrets Manager
 try:
     from back_flask_bd.app.my_project.secrets_manager import get_secret, is_aws_environment
 
@@ -31,7 +30,6 @@ def create_app(config_data: Dict[str, Any] = None, additional_config: Dict[str, 
 
     register_routes(app)
 
-    # Перевіряємо чи потрібно використовувати AWS Secrets Manager
     use_aws_secrets = os.getenv('USE_AWS_SECRETS', 'false').lower() == 'true'
 
     print(f"USE_AWS_SECRETS: {use_aws_secrets}")
@@ -44,7 +42,6 @@ def create_app(config_data: Dict[str, Any] = None, additional_config: Dict[str, 
         try:
             secrets = get_secret()
 
-            # Конфігурація бази даних з AWS Secrets
             db_host = secrets.get('DB_HOST', '').replace('https://', '').replace('http://', '')
             db_port = secrets.get('DB_PORT', '3306')
             db_user = secrets.get('DB_USER')
@@ -56,12 +53,10 @@ def create_app(config_data: Dict[str, Any] = None, additional_config: Dict[str, 
             print(f"DB_USER: {db_user}")
             print(f"DB_NAME: {db_name}")
 
-            # Формуємо DATABASE_URI
             app.config['SQLALCHEMY_DATABASE_URI'] = (
                 f"mysql+pymysql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
             )
 
-            # Flask конфігурація
             app.config['SECRET_KEY'] = secrets.get('SECRET_KEY')
             app.config['DEBUG'] = secrets.get('FLASK_ENV') == 'development'
 
@@ -76,7 +71,6 @@ def create_app(config_data: Dict[str, Any] = None, additional_config: Dict[str, 
             print("=" * 60)
             use_aws_secrets = False
 
-    # Якщо не використовуємо AWS або сталася помилка, використовуємо локальну конфігурацію
     if not use_aws_secrets:
         print("=" * 60)
         print("Using local YAML configuration")
@@ -92,7 +86,6 @@ def create_app(config_data: Dict[str, Any] = None, additional_config: Dict[str, 
         )
         app.config.setdefault('SECRET_KEY', os.urandom(24))
 
-    # Загальні налаштування
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
     migrate = Migrate(app, db)
