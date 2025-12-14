@@ -18,7 +18,7 @@ def get_secret(secret_name=None, region_name="eu-west-2"):
 
     # Якщо secret_name не передано, беремо з environment variable
     if not secret_name:
-        secret_name = os.getenv('AWS_SECRET_NAME', 'prod/myapp/config')
+        secret_name = os.getenv('AWS_SECRET_NAME', 'flask-rds-credentials')
 
     print(f"Attempting to retrieve secret: {secret_name} from region: {region_name}")
 
